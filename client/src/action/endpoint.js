@@ -1,0 +1,38 @@
+export const ecommerceEndpoints = {
+    login : "/api/user/login",
+    signup: '/api/user/register',
+    verify            : "/api/user/verifyUser",
+    socialLogin       : "/api/user/socialLogin",
+    updateUser        : "/api/user/update",
+    adminCheck        : "/api/admin/check" ,
+    getUser           : "/api/user/getUser",
+    getCategory       : "/api/category",
+    updateCategory    : "/api/category",
+    removeCategory    : "/api/category",
+    getOneCategory    : "/api/category",
+    createSubCategory : "/api/subCategory",
+    updateSubCategory : "/api/subCategory",
+    allSubCategory    : "/api/subCategory",
+    deleteSubCategory : "/api/subCategory",
+    oneSubCategory    :  "/api/subCategory",
+    parentSubCategory : "/api/subCategory/parent",
+    cloudImageUpload  : "/api/cloud/upload",
+    cloudImageRemove  : "/api/cloud/remove",
+    createProduct     : "/api/product",
+    liatAllProduct    : "/api/product",
+    delteProduct      : "/api/product",
+    newArrivals       : "/api/product/list",
+    bestSellers       : "/api/product/list",
+    oneProduct        : "/api/product",
+    productStar       : "/api/product/rating",
+    reletedProduct    : "/api/product/releted",
+    productWithCategory : "/api/product/category",
+    productWithSubCategory : "/api/product/subCategory",
+    filterProduct         : "/api/product/filter/find",
+    addToCart             : "/api/user/cart/addToCart",
+    getAddToCart             : "/api/user/cart/addToCart",
+    deleteAddToCart             : "/api/user/cart"
+}
+
+export const url         = process.env.REACT_APP_URL
+export const platformUrl = process.env.REACT_APP_PLATFORM_URL
