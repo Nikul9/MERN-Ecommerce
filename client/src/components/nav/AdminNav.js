@@ -19,7 +19,7 @@ const AdminNav = () => (
       <li className="nav-item">
         <Link to="/admin/products" className="nav-link">
           Products
-        </Link>
+        </Link> 
       </li>
       <li className="nav-item">
         <Link to="/admin/category" className="nav-link">
@@ -34,7 +34,7 @@ const AdminNav = () => (
       </li>
 
       <li className="nav-item">
-        <Link to="/admin/coupons" className="nav-link">
+        <Link to="/admin/cupon" className="nav-link">
           Coupons
         </Link>
       </li>

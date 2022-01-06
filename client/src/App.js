@@ -65,14 +65,15 @@ const App = () => {
   },[successLabels])
   
   useEffect(() => {
-    dispatch(getUser())
     const value = window.localStorage.getItem("userData")
     console.log(value);
       if(value) {
         setLogin(true)
       }
   },[])
+
   useEffect(() => {
+    dispatch(getUser())
     if(isLogin) {
       dispatch(getAddToCart())
     }
@@ -81,16 +82,21 @@ const App = () => {
       if(!isLogin) {
         return
       }
+      console.log(saveCart);
       if(!saveCart) {
+        return
+      }
+      if(saveCart.data.length == 0) {
         return
       }
       dispatch({
         type: "ADD_TO_CART_COUNT",
-        payload: saveCart.data[0].products
+        payload : saveCart.data[0].products
       });
     },[saveCart])
   return (
     <>
+
     <GlobalContext.Provider value={{
       isLogin,
       userData,

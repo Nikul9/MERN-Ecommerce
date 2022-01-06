@@ -99,6 +99,18 @@ const getAddToCart = async (req) => {
     }) 
 }
 
+const updateCart = async (req) => {
+    return service.updateCart(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
+
 const deleteAddToCart = async (req) => {
     return service.deleteAddToCart(req).then((data) => {
         if(data && data === 1) {
@@ -111,6 +123,31 @@ const deleteAddToCart = async (req) => {
     }) 
 }
 
+const addAddress = async (req) => {
+    return service.addAddress(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
+
+const applyCoupon = async (req) => {
+    return service.applyCoupon(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
+
+
 module.exports = {
     regiesterUser,
     nodeMailer,
@@ -120,5 +157,8 @@ module.exports = {
     getUser,
     addToCart,
     getAddToCart , 
-    deleteAddToCart
+    updateCart ,
+    deleteAddToCart,
+    addAddress,
+    applyCoupon
 }

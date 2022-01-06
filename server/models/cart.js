@@ -17,8 +17,8 @@ const cartSchema = new mongoose.Schema({
             }
         }
     ],
-    cartTotal: Number,
-    totalAfterDiscount: Number,
+    cartTotal: { type : Number  , default : 0},
+    totalAfterDiscount: { type : Number  , default : 0},
 })
 
 const cartModel = mongoose.model("cart",cartSchema)

@@ -6,8 +6,10 @@ const bcrypt = require('bcrypt')
 const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client("336148226089-812kkd4c9jfgullks4826scaej76gc15.apps.googleusercontent.com")
 const Cart = require("../../models/cart")
+const productData = require("../../models/product")
 const Mongoose = require("mongoose")
-// const { ObjectId } = mongoose.Schema
+const CouoponData = require("../../models/cupon")
+
 const regiesterUser = async (req) => {
       console.log(req.body);
       const {email , password, firstName , lastName } = req.body;
@@ -214,45 +216,34 @@ const getUser = async (req) => {
 
 const addToCart = async (req) => {
     try {
-        // console.log(req.body.cart[0]);
-        // const cart = req.body.cart
         const cart = await Cart.findOne({ orderBy : req.user._id})
         if(cart) {
             req.body.cart.map( async (result) => {
                 const findedCart = await Cart.findOne({products : { $elemMatch : { product : result._id}}})
-                // console.log(findedCart);
                 if(findedCart) { 
-                    console.log("already avaliable"); 
-                    await Cart.updateOne({ _id : cart._id , "products.product" : result._id },
-                        {
-                            $set : {"products.$.count" : parseInt(result.count)}
-                        },
-                        {new : true}
-                    )
+                    console.log("already added");
                 } else {
                     await Cart.updateOne({_id : cart._id},
                         {
                             $push : {products : { product : Mongoose.Types.ObjectId(result._id) , count : parseInt(result.count)}}
                         },
                         {new : true}
-                    )
+                    ).exec()
                 }
             })
         } else {
             let products = [];
-            req.body.cart.map((data) => {
+            req.body.cart.map( async (data) => {
                 products.push({ product : data._id , count : parseInt(data.count)})
             })
-            
             let addNewCart = {};
             console.log(req.user._id);
             addNewCart.orderBy = req.user._id;
             addNewCart.products = products
-            const addedNewData = await new Cart(addNewCart).save()
-           // console.log(addedNewData);
-            return addedNewData 
+            await new Cart(addNewCart).save()
         }
-        return 1;
+        const userCart = await Cart.find({ orderBy : req.user._id }).exec()
+        return userCart  
     } catch(e) {
         console.log(e);
         return 1
@@ -261,15 +252,36 @@ const addToCart = async (req) => {
 
 const getAddToCart = async (req) => {
     try {
-        const data = await Cart.find({}).populate("products.product").select("products.product products.count -_id")
-        console.log(data);
-        return data
+        // console.log(data.products);
+        const data = await Cart.findOne({orderBy : req.user._id}).populate("products.product") //.select("products.product products.count -_id")
+        let cartTotal = 0;
+        for(let i = 0 ; i < data.products.length ; i++ ) {
+            cartTotal += data.products[i].product.price * data.products[i].count
+        }
+        await Cart.updateOne({orderBy : req.user._id},{ cartTotal : cartTotal , totalAfterDiscount : 0 },{new : true})
+        const allData = await Cart.find({orderBy : req.user._id}).populate("products.product").select("products.product products.count cartTotal -_id")
+        console.log(allData);
+        return allData
     } catch (e) {
         console.log(e);
         return 1
     }
 }
 
+const updateCart = async (req) => {
+    try {
+        const count = req.body.count
+        const updated = await Cart.updateOne({ orderBy : req.user._id , "products.product" : req.params.productId },
+            {
+                $set : {"products.$.count" : parseInt(count) }
+            },
+        {new : true}).exec()
+        return updated 
+    } catch (e) {
+        console.log(e);
+        return 1
+    }
+} 
 const deleteAddToCart = async (req) => {
     try {
         const productId = req.params.productId
@@ -280,10 +292,56 @@ const deleteAddToCart = async (req) => {
         }
         const deletedProduct = await Cart.updateOne({orderBy : req.user._id},{
             $pull : { "products" : { "product" : Mongoose.Types.ObjectId(productId)} }
-        },{ new : true })
-        console.log(deletedProduct);
-        const data = await Cart.find({}).populate("products.product").select("products.product products.count -_id")
-        return data
+        },{ new : true }).exec()
+        const resultData = await Cart.find({orderBy : req.user._id}).populate("products.product").select("products.product products.count -_id")
+        return resultData
+    } catch(e) {
+        console.log(e);
+        return 1
+    }
+}
+
+const addAddress = async (req) => {
+    try {
+        if(!req.body.address) {
+            return 1
+        }
+        const address = await userData.updateOne({_id : req.user._id },{address : req.body.address},{new : true})
+        console.log(address);
+        return address
+    }catch(e) {
+        console.log(e);
+        return 1
+    } 
+} 
+
+const applyCoupon = async (req) => {
+    try {
+        const {coupon} = req.body
+        console.log(coupon);
+        const validCoupon = await CouoponData.findOne({name : coupon})
+        console.log(validCoupon);
+        if(!validCoupon) {
+            return 1
+        }
+        const { products , cartTotal } = await Cart.findOne({orderBy : req.user._id}).exec()
+        if(cartTotal) {
+            console.log(cartTotal);
+            const today = new Date()
+            const someDay = validCoupon.date
+            if(someDay < today) {
+                return 1
+            }
+            console.log(validCoupon.discount);
+            const totalAfterDiscount = cartTotal - (cartTotal * validCoupon.discount / 100)
+            console.log(totalAfterDiscount);
+            await Cart.findOneAndUpdate({orderBy : req.user._id}
+                                        ,{totalAfterDiscount : totalAfterDiscount} 
+                                        ,{new : true }).exec()
+            const updatedCart = await Cart.findOne({orderBy : req.user._id}).exec()
+            return updatedCart
+        }
+        return 1
     } catch(e) {
         console.log(e);
         return 1
@@ -299,5 +357,8 @@ module.exports = {
     getUser ,
     addToCart , 
     getAddToCart,
-    deleteAddToCart
+    updateCart,
+    deleteAddToCart,
+    addAddress,
+    applyCoupon
 }

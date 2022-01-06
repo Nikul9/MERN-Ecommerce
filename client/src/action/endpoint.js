@@ -30,8 +30,14 @@ export const ecommerceEndpoints = {
     productWithSubCategory : "/api/product/subCategory",
     filterProduct         : "/api/product/filter/find",
     addToCart             : "/api/user/cart/addToCart",
-    getAddToCart             : "/api/user/cart/addToCart",
-    deleteAddToCart             : "/api/user/cart"
+    getAddToCart          : "/api/user/cart/addToCart",
+    deleteAddToCart       : "/api/user/cart",
+    address               : "/api/user/address",
+    updateCart            : "/api/user/cart/updateCart",
+    addCupon              : "/api/cupon/addCupon",
+    removeCupon              : "/api/cupon/removeCupon",
+    listcoupon            : "/api/cupon/listCupon",
+    applyCoupon           : "/api/user/applyCoupon"
 }
 
 export const url         = process.env.REACT_APP_URL

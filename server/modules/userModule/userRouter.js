@@ -72,7 +72,16 @@ router.route('/user/cart/addToCart').post( auth , (req,res) => {
     })
 })
 
-router.route('/user/cart/addToCart').get(  (req,res) => {
+router.route('/user/cart/updateCart/:productId').post( auth , (req,res) => {
+    // console.log("from update");
+    fcade.updateCart(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/cart/addToCart').get( auth , (req,res) => {
     // console.log("from update");
     fcade.getAddToCart(req).then((result) => {
         return resHendler.successHandler(res,result)
@@ -84,6 +93,24 @@ router.route('/user/cart/addToCart').get(  (req,res) => {
 router.route('/user/cart/:productId').delete( auth ,(req,res) => {
     // console.log("from update");
     fcade.deleteAddToCart(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/address').post( auth ,(req,res) => {
+    // console.log("from update");
+    fcade.addAddress(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/applyCoupon').post( auth ,(req,res) => {
+    // console.log("from update");
+    fcade.applyCoupon(req).then((result) => {
         return resHendler.successHandler(res,result)
     }).catch((e) => {
         return resHendler.errorHandler(res, e)

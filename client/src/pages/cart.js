@@ -7,7 +7,7 @@ import { GlobalContext } from "../Context/Globlecontext";
 // import { } from "../action/"
 
 const Cart = ({ history }) => {
-    const { newCart , saveCart } = useSelector((state) => { return state.addToCart });
+    const { newCart  , saveCart } = useSelector((state) => { return state.addToCart });
     const [ cart , setCart ] = useState([])
     const { isLogin } =  useContext(GlobalContext)
     const localCart = JSON.parse(localStorage.getItem("cart"))
@@ -26,7 +26,9 @@ const Cart = ({ history }) => {
         if (!saveCart) {
             return
         }
-        console.log(saveCart.data[0].products);
+        if (saveCart.data.length == 0) {
+          return
+      }
         localStorage.removeItem("cart")
         let NewData = []
         saveCart.data[0].products.map((result) => {

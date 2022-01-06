@@ -8,6 +8,8 @@ import subCategory from "./sub.reduser"
 import cloud from "./cloud.reducer"
 import product from "./product.reduser"
 import addToCart from "./addToCart.reduser"
+import coupon from "./coupon.reduser"
+
 export default combineReducers({
     authReduser,
     apiReduser,
@@ -17,5 +19,6 @@ export default combineReducers({
     subCategory,
     cloud,
     product,
-    addToCart
+    addToCart,
+    coupon
 })

@@ -9,6 +9,7 @@ const categpryRoute = require('./modules/category.js/categoryRouter')
 const subRouter = require("./modules/SubCategory/subRouter")
 const productRoute = require("./modules/productModule/productRouter")
 const cloudRoute = require("./modules/cloud/cloudRouter")
+const cupon = require("./modules/Cupon/cuponRouter")
 const bodyparser = require("body-parser")
 app.use(cors())
 app.use(function(req, res, next) {
@@ -25,6 +26,8 @@ app.use("/api",categpryRoute)
 app.use("/api",subRouter)
 app.use("/api",productRoute)
 app.use("/api",cloudRoute)
+app.use("/api",cupon)
+
 app.listen(process.env.PORT, () => {
     console.log(`1, Server running at port no. ${process.env.PORT} in  mode.`);
     dbConfig.connectDb()

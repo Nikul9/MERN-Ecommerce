@@ -17,14 +17,14 @@ export default function (state = initalState  , action ) {
                 //     ...state.list , 
                 //     {lable} 
                 // ],
-                apiData : action.payload
+                apiSuccessData : action.payload
             }
         }
         case API_ERROR : {
             return {
                 ...state,
                 errorLabels :  action.payload.label ,  // [...state.errorLabels, action.payload.label],
-                apiData: action.payload,
+                apiErrorData: action.payload,
             }
         } 
         case API_END : {

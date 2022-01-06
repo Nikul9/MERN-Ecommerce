@@ -1,16 +1,24 @@
-import React , { useState }from "react";
+import React , { useEffect, useState }from "react";
 import ModalImage from "react-modal-image";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { addToCart, deleteAddToCart } from "../../action/addTocart.action"
+import { updateCart , addToCart , deleteAddToCart , getAddToCart } from "../../action/addTocart.action"
+ 
 
 const ProductCardInCheckout = ({ p }) => {
+  const { saveCart , updatedCart } = useSelector((state) =>  state.addToCart )
+  useEffect(() => {
+    if(!updatedCart) {
+      return
+    }
+    dispatch(getAddToCart())
+  },[updatedCart])
   let dispatch = useDispatch();
 
   const [ valueCount , setCount ] = useState(p.count)
@@ -39,11 +47,21 @@ const ProductCardInCheckout = ({ p }) => {
       });
 
       localStorage.setItem("cart", JSON.stringify(cart));
+      let getNewCart = JSON.parse(localStorage.getItem("cart"))
+      console.log("getNewCartgetNewCartgetNewCartgetNewCart");
+      console.log("getNewCartgetNewCartgetNewCartgetNewCart");
+      console.log("getNewCartgetNewCartgetNewCartgetNewCart");
+      console.log("getNewCartgetNewCartgetNewCartgetNewCart");
+      console.log("getNewCartgetNewCartgetNewCartgetNewCart");
+      console.log(getNewCart);
       dispatch({
         type: "ADD_TO_CART_COUNT",
         payload: cart,
       });
-      dispatch(addToCart({cart}))
+      dispatch(updateCart(p._id , {count : data}))
+    // dispatch(getAddToCart())
+
+      
     }
   };
 
@@ -69,6 +87,7 @@ const ProductCardInCheckout = ({ p }) => {
         type: "ADD_TO_CART",
         payload: cart,
       });
+      dispatch(getAddToCart())
     }
    };
 

@@ -14,7 +14,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "subscriber",
     },
-    token : String
+    token : String,
+    address : String
 })
 UserSchema.pre('save',async function(next) {
     if(this.isModified('password')) {

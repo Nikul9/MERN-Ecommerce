@@ -26,6 +26,7 @@ import SubCategoryHome from "../pages/sub/SubHome"
 import ShopPage from "../pages/shop"
 import Cart from "../pages/cart"
 import Checkout from "../pages/checkOut"
+import Cupon from "../pages/admin/Cupon/Cupon"
 const AppRoute = () => {    
     const {  isLogin , userData } = useContext(GlobalContext)
     console.log(isLogin);
@@ -51,6 +52,7 @@ const AppRoute = () => {
             <AdminRoute exact path="/admin/updateSub/:slug" component={UpdateSubCreate} />
             <AdminRoute exact path="/admin/product" component={productCreate} />
             <AdminRoute exact path="/admin/products" component={AllProduct} />
+            <AdminRoute exact path="/admin/cupon" component={Cupon} />
         </Switch>
     )
 }
