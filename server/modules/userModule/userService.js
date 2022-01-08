@@ -44,8 +44,8 @@ const regiesterUser = async (req) => {
                 port: 587,
                 secure: false, // true for 465, false for other ports
                 auth: {
-                    user: '9328nion@gmail.com', // generated ethereal user
-                    pass: "**nikul1**"  // generated ethereal password
+                    user: process.env.EMAIL, // generated ethereal user
+                    pass: process.env.PASSWORD  // generated ethereal password
                 },
                 tls:{
                     rejectUnauthorized:false
