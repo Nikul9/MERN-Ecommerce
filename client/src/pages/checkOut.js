@@ -154,8 +154,8 @@ const applyDiscountCoupon = () => {
             {/* ) : ( */}
               <button
                 className="btn btn-primary"
-                disabled={!addressSaved || !products.length}
-               // onClick={() => history.push("/payment")}
+              //  disabled={!addressSaved || !products.length}
+                onClick={() => history.push("/payment")}
               >
                 Place Order
               </button>

@@ -1,21 +1,8 @@
-import React, { useState, useEffect } from "react";
-import AdminNav from "../../components/nav/AdminNav";
-import { listAllProduct } from "../../action/product.action"
-import { useDispatch, useSelector } from "react-redux";
-import AdminProductCard from "../../components/cards/adminProductCard";
+import React from "react";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import { adminOrderList , purchaseUserHistory } from "../../action/user.action";
-import ShowPaymentInfo from "../../components/cards/ShowPaymentInfo"
+import ShowPaymentInfo from "../cards/ShowPaymentInfo";
 
-
-const AdminHistory = () => {
-  const [ allProduct , setAllProduct ] = useState([])
-  const dispatch = useDispatch()
-  const { listedAllproduct } = useSelector((state) => {return state.product })
-  const [ orders , setOrder ] = useState([]);
-  const { adminAllOrder , purchaseHistory } = useSelector((state) => {
-    return state.userReduser
-  })
+const Orders = ({ orders, handleStatusChange }) => {
   const showOrderInTable = (order) => (
     <table className="table table-bordered">
       <thead className="thead-light">
@@ -52,28 +39,10 @@ const AdminHistory = () => {
     }
     </table>
   );
-  useEffect(() => {
-    dispatch(adminOrderList())
-  },[])
-  useEffect(() => {
-    if(!adminAllOrder) {
-      return
-    }
-    console.log("purchaseHistory.data.products");
-    console.log(adminAllOrder.data[0].products);
-    setOrder(adminAllOrder.data)
-  },[adminAllOrder])
-  return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-2">
-          <AdminNav />
-        </div>
 
-        <div className="col-md-10">
-          <h4>Admin Dashboard</h4>
-          {/* {JSON.stringify(orders)} */}
-          {orders.map((order) => (
+  return (
+    <>
+      {orders.map((order) => (
         <div key={order._id} className="row pb-5">
           <div className="btn btn-block bg-light">
             <ShowPaymentInfo order={order} showStatus={false} />
@@ -81,18 +50,30 @@ const AdminHistory = () => {
             <div className="row">
               <div className="col-md-4">Delivery Status</div>
               <div className="col-md-8">
-                
+                <select
+                  onChange={(e) =>
+                    handleStatusChange(order._id, e.target.value)
+                  }
+                  className="form-control"
+                  defaultValue={order.orderStatus}
+                  name="status"
+                >
+                  <option value="Not Processed">Not Processed</option>
+                  <option value="Cash On Delivery">Cash On Delivery</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Dispatched">Dispatched</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="Completed">Completed</option>
+                </select>
               </div>
             </div>
           </div>
 
           {showOrderInTable(order)}
         </div>
-        ))}
-        </div>
-      </div>
-    </div>
+      ))}
+    </>
   );
 };
 
-export default AdminHistory;
+export default Orders;

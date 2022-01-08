@@ -4,7 +4,7 @@ const fcade = require('./userFcade')
 const resHendler = require('../../handlers/responseHandler')
 const nodemailer = require("nodemailer")
 const verifyToken = require('../../middleware/middleware')
-const {auth} = require('../../middleware/MainMiddleWare')
+const {auth , adminAuth} = require('../../middleware/MainMiddleWare')
 
 router.route('/user/register').post((req,res) => {
     fcade.regiesterUser(req,res).then((result) => {
@@ -111,6 +111,42 @@ router.route('/user/address').post( auth ,(req,res) => {
 router.route('/user/applyCoupon').post( auth ,(req,res) => {
     // console.log("from update");
     fcade.applyCoupon(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/createOrder').post( auth ,(req,res) => {
+    // console.log("from update");
+    fcade.createOrder(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/emptyUserCart').delete( auth ,(req,res) => {
+    // console.log("from update");
+    fcade.emptyUserCart(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/purchaseHistory').get( auth ,(req,res) => {
+    console.log("LOGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+    fcade.purchaseUserHistory(req).then((result) => {
+        return resHendler.successHandler(res,result)
+    }).catch((e) => {
+        return resHendler.errorHandler(res, e)
+    })
+})
+
+router.route('/user/adminOrderList').get( adminAuth ,(req,res) => {
+    // console.log("LOGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+    fcade.adminOrderList(req).then((result) => {
         return resHendler.successHandler(res,result)
     }).catch((e) => {
         return resHendler.errorHandler(res, e)

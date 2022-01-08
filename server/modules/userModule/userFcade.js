@@ -147,6 +147,53 @@ const applyCoupon = async (req) => {
     }) 
 }
 
+const createOrder = async (req) => {
+    return service.createOrder(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
+
+const emptyUserCart = async (req) => {
+    return service.emptyUserCart(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
+
+const purchaseUserHistory = async (req) => {
+    return service.purchaseUserHistory(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
+
+const adminOrderList = async (req) => {
+    return service.adminOrderList(req).then((data) => {
+        if(data && data === 1) {
+            return resHeandler.requestResponse(false, constant.HTTP_CODE.badRequest ,userConstant.MESSAGE.emailExist , data )
+        } else {
+            return resHeandler.requestResponse(true,constant.HTTP_CODE.ok , userConstant.MESSAGE.getSuccess,data)
+        }
+    } , (error) => {
+        return resHeandler.requestResponse(false,constant.HTTP_CODE.badRequest,userConstant.MESSAGE.addError,error)
+    }) 
+}
 
 module.exports = {
     regiesterUser,
@@ -160,5 +207,9 @@ module.exports = {
     updateCart ,
     deleteAddToCart,
     addAddress,
-    applyCoupon
+    applyCoupon,
+    createOrder,
+    emptyUserCart,
+    purchaseUserHistory,
+    adminOrderList
 }

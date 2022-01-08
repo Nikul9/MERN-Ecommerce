@@ -35,9 +35,14 @@ export const ecommerceEndpoints = {
     address               : "/api/user/address",
     updateCart            : "/api/user/cart/updateCart",
     addCupon              : "/api/cupon/addCupon",
-    removeCupon              : "/api/cupon/removeCupon",
+    removeCupon           : "/api/cupon/removeCupon",
     listcoupon            : "/api/cupon/listCupon",
-    applyCoupon           : "/api/user/applyCoupon"
+    applyCoupon           : "/api/user/applyCoupon",
+    stripePaymentIntent   : "/api/payment/intent", 
+    createOrder           : "/api/user/createOrder",
+    emptyUserCart         : "/api/user/emptyUserCart",
+    purchaseUserHistory   : "/api/user/purchaseHistory",
+    adminOrderList        : "/api/user/adminOrderList"
 }
 
 export const url         = process.env.REACT_APP_URL

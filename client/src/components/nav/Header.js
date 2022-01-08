@@ -63,7 +63,7 @@ const Header = () => {
   })
   return (<>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <a className="navbar-brand" href="#">Navbar</a>
+          {/* <a className="navbar-brand" href="#">Navbar</a> */}
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -73,10 +73,13 @@ const Header = () => {
               <li className="nav-item active">
                 <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
               </li>
-              <li key="cart" icon={<ShoppingCartOutlined />}>
-                <Link to="/cart">
+              <li className="nav-item active">
+                <Link className="nav-link" to="/shop">SHOP <span className="sr-only">(current)</span></Link>
+              </li>
+              <li key="cart" icon={<ShoppingCartOutlined />} className="nav-item">
+                <Link className="nav-link" to="/cart">
                   <Badge count={cartCount} offset={[9, 0]}>
-                    Cart
+                    CART
                   </Badge>
                 </Link>
               </li>
@@ -96,10 +99,10 @@ const Header = () => {
                   {newUser.firstName}
                 </a>   
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  {newUser.role === "subscriber" &&
+                  {newUser.role === "admin" &&
                       <li><Link className="nav-link" to="/admin/dashboard">Dashboard</Link></li>
                   }
-                  {!newUser.role === "subscriber" &&
+                  {newUser.role === "subscriber" &&
                       <li><Link className="nav-link" to="/user/history">Dashboard</Link></li>
                   }
                   <li><a className="dropdown-item" href="" onClick={logout}>LOGOUT</a></li>

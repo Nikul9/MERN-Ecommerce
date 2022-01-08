@@ -9,7 +9,7 @@ const Cart = require("../../models/cart")
 const productData = require("../../models/product")
 const Mongoose = require("mongoose")
 const CouoponData = require("../../models/cupon")
-
+const Order = require("../../models/Order")
 const regiesterUser = async (req) => {
       console.log(req.body);
       const {email , password, firstName , lastName } = req.body;
@@ -255,6 +255,10 @@ const getAddToCart = async (req) => {
         // console.log(data.products);
         const data = await Cart.findOne({orderBy : req.user._id}).populate("products.product") //.select("products.product products.count -_id")
         let cartTotal = 0;
+        if(data ==  null ) {
+            return 1
+        }
+        console.log(data);
         for(let i = 0 ; i < data.products.length ; i++ ) {
             cartTotal += data.products[i].product.price * data.products[i].count
         }
@@ -348,6 +352,67 @@ const applyCoupon = async (req) => {
     }
 }
 
+const createOrder = async (req) => {
+    try {
+       // console.log(req.body);
+        // return
+        const { products } = await Cart.findOne({orderBy : req.user._id}).exec()
+        const { paymentIntent } = req.body.StripeDetail
+        console.log(paymentIntent);
+        const NewOrser = new Order({
+            products,
+            orderBy : req.user._id,
+            paymentIntent,
+        })
+        await NewOrser.save()
+        let bulkOption = products.map((item) => {
+            return {
+                updateOne : { 
+                    filter : {_id : item.product},
+                    update : {$inc : {quantity : -item.count , sold : +item.count}}
+                }
+            }
+        }) 
+        let update = await productData.bulkWrite( bulkOption , {} )
+        return update
+    } catch(e) {
+        console.log(e);
+        return 1
+    }
+}
+
+const emptyUserCart = async (req) => {
+    try {
+        const emptyCart = await Cart.deleteOne({orderBy : req.user._id}).remove()
+        return emptyCart
+    } catch(e) {
+        console.log(e);
+        return 1
+    }
+}
+
+const purchaseUserHistory = async (req) => {
+    try {
+        const userOrder = await Order.find({orderBy : req.user._id}).populate('products.product')
+       // console.log(userOrder);
+        return userOrder
+    } catch(e) {
+        console.log(e);
+        return 1
+    }
+}
+
+const adminOrderList = async (req) => {
+    try {
+        const adminOrder = await Order.find({}).populate('products.product')
+       // console.log(userOrder);
+        return adminOrder
+    } catch(e) {
+        console.log(e);
+        return 1
+    }
+}
+
 module.exports = {
     regiesterUser,
     nodeMailer,
@@ -360,5 +425,9 @@ module.exports = {
     updateCart,
     deleteAddToCart,
     addAddress,
-    applyCoupon
+    applyCoupon,
+    createOrder,
+    emptyUserCart,
+    purchaseUserHistory,
+    adminOrderList
 }

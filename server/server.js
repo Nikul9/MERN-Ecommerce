@@ -11,6 +11,7 @@ const productRoute = require("./modules/productModule/productRouter")
 const cloudRoute = require("./modules/cloud/cloudRouter")
 const cupon = require("./modules/Cupon/cuponRouter")
 const bodyparser = require("body-parser")
+const StriopeRouter = require("./modules/StripePayment/StripeRouter")
 app.use(cors())
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -27,7 +28,7 @@ app.use("/api",subRouter)
 app.use("/api",productRoute)
 app.use("/api",cloudRoute)
 app.use("/api",cupon)
-
+app.use("/api", StriopeRouter )
 app.listen(process.env.PORT, () => {
     console.log(`1, Server running at port no. ${process.env.PORT} in  mode.`);
     dbConfig.connectDb()

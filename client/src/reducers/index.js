@@ -9,7 +9,7 @@ import cloud from "./cloud.reducer"
 import product from "./product.reduser"
 import addToCart from "./addToCart.reduser"
 import coupon from "./coupon.reduser"
-
+import stripeReduser from "./Stripe.reduser"
 export default combineReducers({
     authReduser,
     apiReduser,
@@ -20,5 +20,6 @@ export default combineReducers({
     cloud,
     product,
     addToCart,
-    coupon
+    coupon,
+    stripeReduser
 })

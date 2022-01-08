@@ -1,8 +1,92 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import UserNav from "../../components/nav/UserNav";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { purchaseUserHistory } from "../../action/user.action";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Invoice from "../../components/order/Invoice"
+import ShowPaymentInfo from "../../components/cards/ShowPaymentInfo"
 
 const History = () => {
 
+  const [ orders , setOrder ] = useState([]);
+  const { purchaseHistory } = useSelector((state) => {
+      return state.userReduser
+  })
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("purchaseUserHistory");
+    console.log("purchaseUserHistory");
+    console.log("purchaseUserHistory");
+    console.log("purchaseUserHistory");
+    dispatch(purchaseUserHistory())
+  },[])
+  useEffect(() => {
+    if(!purchaseHistory) {
+      return
+    }
+    if(purchaseHistory.data.length < 1) {
+      return
+    }
+    console.log("purchaseHistory.data.products");
+    console.log(purchaseHistory.data[0].products);
+    setOrder(purchaseHistory.data)
+  },[purchaseHistory])
+  
+  const showOrderInTable = (order) => (
+    <table className="table table-bordered">
+      <thead className="thead-light">
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Price</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Color</th>
+          <th scope="col">Count</th>
+          <th scope="col">Shipping</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {order.products.map((p, i) => (
+          <tr key={i}>
+            <td>
+              <b>{p.product.title}</b>
+            </td>
+            <td>{p.product.price}</td>
+            <td>{p.product.brand}</td>
+            <td>{p.color}</td>
+            <td>{p.count}</td>
+            <td>
+              {p.product.shipping === "Yes" ? (
+                <CheckCircleOutlined style={{ color: "green" }} />
+              ) : (
+                <CloseCircleOutlined style={{ color: "red" }} />
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+  const showDownloadLink = (order) => (
+    <PDFDownloadLink
+      document={<Invoice order={order} />}
+      fileName="invoice.pdf"
+      className="btn btn-sm btn-block btn-outline-primary"
+    >
+      Download PDF
+    </PDFDownloadLink>
+  );
+  const showEachOrders = () =>
+    orders.reverse().map((order, i) => (
+      <div key={i} className="m-5 p-3 card">
+        <ShowPaymentInfo order={order} />
+        {showOrderInTable(order)}
+        <div className="row">
+          <div className="col">{showDownloadLink(order)}</div>
+        </div>
+      </div>
+    ));
   return (
     <div className="container-fluid">
       <div className="row">
@@ -11,10 +95,9 @@ const History = () => {
         </div>
         <div className="col text-center">
           <h4>
-              History Page
-            {/* {orders.length > 0 ? "User purchase orders" : "No purchase orders"} */}
+            {orders.length > 0 ? "User purchase orders" : "No purchase orders"}
           </h4>
-          {/* {showEachOrders()} */}
+          {showEachOrders()}
         </div>
       </div>
     </div>

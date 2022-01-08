@@ -1,6 +1,11 @@
 import { useHistory } from "react-router"
 import {
-    UPDATE_USER , GET_USER , APPLY_COUPON_USER ,
+    UPDATE_USER ,
+    ADMIN_ORDER_USER ,
+    GET_USER ,
+    APPLY_COUPON_USER ,
+    CREATE_ORDER_USER,
+    PURCHASE_HISTORY_USER
 } from "../action/reducer.types"
 export default function (state = {}, action) {
     switch(action.type) {
@@ -21,7 +26,25 @@ export default function (state = {}, action) {
                 ...state,
                 applyedCoupon : action.payload 
             }
+        }
+        case CREATE_ORDER_USER : {
+            return {
+                ...state,
+                createdOrder : action.payload
+            }
         } 
+        case PURCHASE_HISTORY_USER : {
+            return {
+                ...state,
+                purchaseHistory : action.payload
+            }
+        }
+        case ADMIN_ORDER_USER : {
+            return {
+                ...state , 
+                adminAllOrder : action.payload
+            }
+        }
         default: return state
     }
 }

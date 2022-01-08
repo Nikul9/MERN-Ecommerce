@@ -8,11 +8,12 @@ import {
     StarOutlined,
   } from "@ant-design/icons";
 import { getCategory } from "../action/category.action."
-import { filterProduct } from "../action/product.action"
+import { filterProduct , listAllProduct } from "../action/product.action"
 import ProductCard from "../components/cards/productCard";
 const {SubMenu,ItemGroup} = Menu;
 
 const ShopPage = () => {
+    
     const [ value , setValue ] = useState({brand : [] , color : [] , category : [] ,  shipping : ""})
     const {category , brand , color , price , shipping } = value;
     const [ colors , setColors ] = useState(["Blue","Black","Brown","Silver","White"])
@@ -71,9 +72,18 @@ const ShopPage = () => {
     const { getAllCategory  } = useSelector((state) => {
         return state.category
     })
-    const {  getProductFilter } = useSelector((state) => {
+    const { listedAllproduct , getProductFilter } = useSelector((state) => {
         return state.product
     })
+    useEffect(() => {
+        dispatch(listAllProduct())
+    },[])
+    useEffect(() => {
+        if(!listedAllproduct) {
+            return
+        }
+        setProducts(listedAllproduct.data)
+    },[listedAllproduct])
     const showCategories = () =>
         categorys.map((c) => (
             <div key={c._id}>

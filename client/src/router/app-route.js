@@ -27,6 +27,7 @@ import ShopPage from "../pages/shop"
 import Cart from "../pages/cart"
 import Checkout from "../pages/checkOut"
 import Cupon from "../pages/admin/Cupon/Cupon"
+import Payment from "../pages/payment"
 const AppRoute = () => {    
     const {  isLogin , userData } = useContext(GlobalContext)
     console.log(isLogin);
@@ -45,6 +46,8 @@ const AppRoute = () => {
             <ProtectedRoute exact path="/user/update" component={UpdateUser} auth={isLogin} />
             <ProtectedRoute exact path="/user/wishlist" component={WishList} auth={isLogin} />
             <ProtectedRoute exact path="/cart/checkout" component={Checkout} auth={isLogin} />
+            <ProtectedRoute exact path="/payment" component={Payment} auth={isLogin} />        
+            
             <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
             <AdminRoute exact path="/admin/category" component={CreateCategory} />
             <AdminRoute exact path="/admin/updateCategory/:slug" component={UpdateCategory} />

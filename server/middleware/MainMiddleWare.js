@@ -31,7 +31,7 @@ const adminAuth =  async (req , res , next) => {
         const adminDecoded = jwt.verify(token , process.env.JWT)
         const adminData = await User.findOne({_id : adminDecoded._id, token })  
         // console.log(adminData);
-        if(!adminData.role === "subscriber") { 
+        if(adminData.role != "admin") {
             throw new Error('NO ADMIN')
         }
         req.admin = adminData

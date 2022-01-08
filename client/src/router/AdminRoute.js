@@ -17,7 +17,7 @@ const AdminRoute = ({component : Component , ...rest}) => {
     console.log("userData");
     console.log(userData);
     if(adminData.role) {
-        if(adminData.role === "subscriber" ) {
+        if(adminData.role === "admin") {
             admin = true
         }   
     }

@@ -86,6 +86,9 @@ const App = () => {
       if(!saveCart) {
         return
       }
+      // if(saveCart == null || undefined || []) {
+      //   return
+      // }
       if(saveCart.data.length == 0) {
         return
       }

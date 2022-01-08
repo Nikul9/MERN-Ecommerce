@@ -1,6 +1,13 @@
 import React , { useContext } from "react"
 import { apiAction } from "./api.action";
-import { APPLY_COUPON_USER , ADDRESS_USER , GET_USER, UPDATE_USER } from "./reducer.types";
+import { PURCHASE_HISTORY_USER ,
+         ADMIN_ORDER_USER
+        ,EMPTY_CART_USER 
+        , CREATE_ORDER_USER 
+        , APPLY_COUPON_USER 
+        , ADDRESS_USER 
+        , GET_USER
+        , UPDATE_USER } from "./reducer.types";
 import { ecommerceEndpoints , platformUrl } from './endpoint'
 import { GlobalContext } from "../Context/Globlecontext";
 
@@ -50,3 +57,48 @@ export function applyCoupon (data) {
       data
     })
 } 
+
+export function createOrder (data) {  
+  return apiAction({
+      url            : `${platformUrl + ecommerceEndpoints.createOrder}`,
+      method         : 'post',
+      label          :  CREATE_ORDER_USER ,
+      isTokenSkipped : true,
+      showLoader     : true,
+      showToast      : true,
+      data
+    })
+}
+
+export function emptyUserCart () {  
+  return apiAction({
+      url            : `${platformUrl + ecommerceEndpoints.emptyUserCart}`,
+      method         : 'delete',
+      label          :  EMPTY_CART_USER ,
+      isTokenSkipped : true,
+      showLoader     : true,
+      showToast      : true
+    })
+}
+
+export function purchaseUserHistory () {  
+  return apiAction({
+      url            : `${platformUrl + ecommerceEndpoints.purchaseUserHistory}`,
+      method         : 'get',
+      label          :  PURCHASE_HISTORY_USER ,
+      isTokenSkipped : true,
+      showLoader     : true,
+      showToast      : true
+    })
+}
+
+export function adminOrderList () {  
+  return apiAction({
+      url            : `${platformUrl + ecommerceEndpoints.adminOrderList}`,
+      method         : 'get',
+      label          :  ADMIN_ORDER_USER ,
+      isTokenSkipped : true,
+      showLoader     : true,
+      showToast      : true
+    })
+}
